@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class FragmentAbout extends Fragment {
+public class FragmentResult extends Fragment {
 
     private static final String ARGUMENT_FROM_INPUT_TEXT = "input_text";
     private static final String ARGUMENT_FROM_INPUT_TEXT_DEFAULT = "empty_text";
@@ -33,7 +33,7 @@ public class FragmentAbout extends Fragment {
             @Nullable Bundle savedInstanceState
     ) {
         return inflater.inflate(
-                R.layout.fragment_about,
+                R.layout.fragment_result,
                 container,
                 false
         );
@@ -56,10 +56,10 @@ public class FragmentAbout extends Fragment {
     }
 
 
-    public static FragmentAbout newInstanceWithInputData(String input) {
+    public static FragmentResult newInstanceWithInputData(String input) {
         Bundle args = new Bundle();
         args.putString(ARGUMENT_FROM_INPUT_TEXT, input);
-        FragmentAbout fragment = new FragmentAbout();
+        FragmentResult fragment = new FragmentResult();
         fragment.setArguments(args);
         return fragment;
 
