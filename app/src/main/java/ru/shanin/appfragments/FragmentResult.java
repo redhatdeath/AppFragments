@@ -1,14 +1,23 @@
 package ru.shanin.appfragments;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 public class FragmentResult extends Fragment {
 
@@ -16,13 +25,19 @@ public class FragmentResult extends Fragment {
     private static final String ARGUMENT_FROM_INPUT_TEXT_DEFAULT = "empty_text";
     private String input_data;
 
-    private TextView tv;
+    private TextView tv_input, tv_sensor;
+    private Button bt;
+
+    private ViewModelResult viewModel;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         parseParams();
+        Log.d("FragmentResult", "onCreate");
+
+
     }
 
     @Nullable
@@ -43,8 +58,9 @@ public class FragmentResult extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tv = view.findViewById(R.id.about_tv);
-        tv.setText(input_data);
+        initLayout(view);
+        viewModel = new ViewModelProvider(this).get(ViewModelResult.class);
+        viewModel.sensorData.observe(getViewLifecycleOwner(), new MyObserver());
 
     }
 
@@ -63,6 +79,25 @@ public class FragmentResult extends Fragment {
         fragment.setArguments(args);
         return fragment;
 
+    }
+
+    private void initLayout(View view) {
+        tv_sensor = view.findViewById(R.id.sensor_tv);
+        tv_input = view.findViewById(R.id.about_tv);
+        tv_input.setText(input_data);
+        bt = view.findViewById(R.id.bt);
+        bt.setOnClickListener(v -> {
+            requireActivity().onBackPressed();
+        });
+
+    }
+
+
+    private class MyObserver implements Observer<String> {
+        @Override
+        public void onChanged(String sensorValue) {
+            tv_sensor.setText(sensorValue);
+        }
     }
 
 

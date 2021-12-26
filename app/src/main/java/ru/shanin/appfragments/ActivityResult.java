@@ -1,11 +1,16 @@
 package ru.shanin.appfragments;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import ru.shanin.appfragments.service.TypeLightService;
 
 public class ActivityResult extends AppCompatActivity {
 
@@ -43,7 +48,9 @@ public class ActivityResult extends AppCompatActivity {
         setContentView(R.layout.activity_result);
         parseIntent();
         Log.d("ActivityResult", "input_data = " + input_data);
-        launchFragmentResult(input_data);
+        if (savedInstanceState == null)
+            launchFragmentResult(input_data);
+
     }
 
     /**

@@ -6,7 +6,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
+
+import ru.shanin.appfragments.service.TypeLightService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,18 +51,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void launchFragmentResult(String data) {
+        Fragment fragment;
+//        if(bla bla bla){}
+//        else {}
+        fragment = FragmentResult.newInstanceWithInputData(data);
+//        getSupportFragmentManager()
+//                .popBackStack();
         getSupportFragmentManager()
                 .beginTransaction()
+//                .addToBackStack("null")
 //                .replace(
 //                        R.id.fragmentActivityResult,
 //                        FragmentResult.newInstanceWithInputData(data)
 //                )
                 .add(
                         R.id.fragmentActivityResult,
-                        FragmentResult.newInstanceWithInputData(data)
+                        fragment
                 )
-                .commitNow();
+                .commit();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(
+                TypeLightService.onStopService(getApplicationContext()));
 
+    }
 }
