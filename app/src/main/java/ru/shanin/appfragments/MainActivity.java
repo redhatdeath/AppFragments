@@ -50,7 +50,11 @@ public class MainActivity extends AppCompatActivity {
     private void launchFragmentResult(String data) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(
+//                .replace(
+//                        R.id.fragmentActivityResult,
+//                        FragmentResult.newInstanceWithInputData(data)
+//                )
+                .add(
                         R.id.fragmentActivityResult,
                         FragmentResult.newInstanceWithInputData(data)
                 )

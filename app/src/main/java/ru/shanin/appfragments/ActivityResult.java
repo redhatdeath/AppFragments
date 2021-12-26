@@ -13,13 +13,11 @@ public class ActivityResult extends AppCompatActivity {
     private String input_data;
 
     /**
-     * Constructor
+     * Constructor Activity
      * Input data into arg
      *
-     * @param arg
-     * @param context
-     * @return intent
-     * Return new intent with input data
+     * @param arg some input data
+     * @return new intent:ActivityResult with input data
      */
     public static Intent newIntentActivityResult(Context context, String arg) {
         Intent intent = new Intent(context, ActivityResult.class);
@@ -48,6 +46,12 @@ public class ActivityResult extends AppCompatActivity {
         launchFragmentResult(input_data);
     }
 
+    /**
+     * Constructor Fragment
+     * Input some data into 'data'
+     *
+     * @param data some input data. Create new intent:FragmentResult with input data
+     */
 
     private void launchFragmentResult(String data) {
         getSupportFragmentManager()
