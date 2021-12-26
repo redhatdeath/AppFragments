@@ -1,4 +1,4 @@
-package ru.shanin.appfragments;
+package ru.shanin.appfragments.ui.noland;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +7,9 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import ru.shanin.appfragments.ui.fragment.FragmentResult;
+import ru.shanin.appfragments.R;
 
 public class ActivityResult extends AppCompatActivity {
 

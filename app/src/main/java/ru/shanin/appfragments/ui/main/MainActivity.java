@@ -1,4 +1,4 @@
-package ru.shanin.appfragments;
+package ru.shanin.appfragments.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
+import ru.shanin.appfragments.ui.noland.ActivityResult;
+import ru.shanin.appfragments.ui.fragment.FragmentResult;
+import ru.shanin.appfragments.R;
 import ru.shanin.appfragments.service.TypeLightService;
 
 public class MainActivity extends AppCompatActivity {

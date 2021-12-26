@@ -1,4 +1,4 @@
-package ru.shanin.appfragments;
+package ru.shanin.appfragments.app;
 
 import android.app.Application;
 import android.content.ComponentName;

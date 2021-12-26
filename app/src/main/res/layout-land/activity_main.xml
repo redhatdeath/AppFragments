@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.main.MainActivity">
 
 
     <Button
@@ -36,7 +36,8 @@
         app:layout_constraintEnd_toEndOf="@+id/guideline_v_0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        android:importantForAutofill="no" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentActivityResult"

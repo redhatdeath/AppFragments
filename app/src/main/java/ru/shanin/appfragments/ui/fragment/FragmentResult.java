@@ -1,11 +1,6 @@
-package ru.shanin.appfragments;
+package ru.shanin.appfragments.ui.fragment;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
+import ru.shanin.appfragments.R;
 
 public class FragmentResult extends Fragment {
 
@@ -86,9 +83,7 @@ public class FragmentResult extends Fragment {
         tv_input = view.findViewById(R.id.about_tv);
         tv_input.setText(input_data);
         bt = view.findViewById(R.id.bt);
-        bt.setOnClickListener(v -> {
-            requireActivity().onBackPressed();
-        });
+        bt.setOnClickListener(v -> requireActivity().onBackPressed());
 
     }
 
