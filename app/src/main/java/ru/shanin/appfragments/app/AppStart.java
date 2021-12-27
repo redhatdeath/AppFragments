@@ -7,11 +7,10 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import ru.shanin.appfragments.service.SensorsService;
+import ru.shanin.appfragments.service.MySensorsService;
 
 public class AppStart extends Application {
-    public static SensorsService mService;
-
+    public static MySensorsService mService;
 
     @Override
     public void onCreate() {
@@ -21,9 +20,8 @@ public class AppStart extends Application {
     }
 
     private void onStartAppService(Context context) {
-        startService(SensorsService.onStartService(context));
+        context.startForegroundService(MySensorsService.onStartService(context));
     }
-
 
     private void initService() {
         final ServiceConnection connection = new ServiceConnection() {
@@ -32,14 +30,13 @@ public class AppStart extends Application {
                     ComponentName className,
                     IBinder service
             ) {
-                SensorsService.LocalBinder binder = (SensorsService.LocalBinder) service;
+                MySensorsService.LocalBinder binder = (MySensorsService.LocalBinder) service;
                 mService = binder.getService();
-                mService.onStartListenLightSens();
             }
 
             @Override
             public void onServiceDisconnected(ComponentName arg0) {
-                mService.onStopListenLightSens();
+
             }
         };
         // Bind to LocalService

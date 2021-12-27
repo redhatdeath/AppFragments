@@ -60,6 +60,10 @@ public class ResultFragment extends Fragment {
         return fragment;
     }
 
+    public static ResultFragment newInstanceWithoutInputData() {
+        return new ResultFragment();
+    }
+
     private void initLayout(View view) {
         TextView tv_input = view.findViewById(R.id.about_tv);
         tv_input.setText(input_data);

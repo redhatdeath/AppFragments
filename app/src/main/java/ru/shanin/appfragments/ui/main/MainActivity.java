@@ -9,10 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
-import ru.shanin.appfragments.ui.noland.ActivityResult;
-import ru.shanin.appfragments.ui.fragment.result.ResultFragment;
 import ru.shanin.appfragments.R;
-import ru.shanin.appfragments.service.SensorsService;
+import ru.shanin.appfragments.service.MySensorsService;
+import ru.shanin.appfragments.ui.fragment.result.ResultFragment;
+import ru.shanin.appfragments.ui.fragment.sensors.SensorsFragment;
+import ru.shanin.appfragments.ui.noland.ActivityResult;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
             if (isOnePaneMode())
                 launchActivityResult(input);
             else
-                launchFragmentResult(input);
+                launchFragmentSensors();
         });
     }
 
@@ -74,11 +75,32 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    private void launchFragmentSensors() {
+        Fragment fragment;
+//        if(bla bla bla){}
+//        else {}
+        fragment = SensorsFragment.newInstanceWithoutInputData();
+//        getSupportFragmentManager()
+//                .popBackStack();
+        getSupportFragmentManager()
+                .beginTransaction()
+//                .addToBackStack("null")
+//                .replace(
+//                        R.id.fragmentActivityResult,
+//                        FragmentResult.newInstanceWithInputData(data)
+//                )
+                .add(
+                        R.id.fragmentActivityResult,
+                        fragment
+                )
+                .commit();
+    }
+
     @Override
     protected void onDestroy() {
+        stopService(MySensorsService.onStopService(getApplicationContext()));
         super.onDestroy();
-        stopService(
-                SensorsService.onStopService(getApplicationContext()));
+
 
     }
 }

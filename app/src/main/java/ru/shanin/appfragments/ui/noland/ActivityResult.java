@@ -8,8 +8,9 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import ru.shanin.appfragments.ui.fragment.result.ResultFragment;
 import ru.shanin.appfragments.R;
+import ru.shanin.appfragments.ui.fragment.result.ResultFragment;
+import ru.shanin.appfragments.ui.fragment.sensors.SensorsFragment;
 
 public class ActivityResult extends AppCompatActivity {
 
@@ -48,7 +49,7 @@ public class ActivityResult extends AppCompatActivity {
         parseIntent();
         Log.d("ActivityResult", "input_data = " + input_data);
         if (savedInstanceState == null)
-            launchFragmentResult(input_data);
+            launchFragmentResult();
 
     }
 
@@ -64,6 +65,27 @@ public class ActivityResult extends AppCompatActivity {
 //        if(bla bla bla){}
 //        else {}
         fragment = ResultFragment.newInstanceWithInputData(data);
+//        getSupportFragmentManager()
+//                .popBackStack();
+        getSupportFragmentManager()
+                .beginTransaction()
+//                .addToBackStack("null")
+//                .replace(
+//                        R.id.fragmentActivityResult,
+//                        FragmentResult.newInstanceWithInputData(data)
+//                )
+                .add(
+                        R.id.fragmentActivityResult,
+                        fragment
+                )
+                .commit();
+    }
+
+    private void launchFragmentResult() {
+        Fragment fragment;
+//        if(bla bla bla){}
+//        else {}
+        fragment = SensorsFragment.newInstanceWithoutInputData();
 //        getSupportFragmentManager()
 //                .popBackStack();
         getSupportFragmentManager()
