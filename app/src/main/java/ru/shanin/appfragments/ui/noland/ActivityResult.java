@@ -8,7 +8,7 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import ru.shanin.appfragments.ui.fragment.FragmentResult;
+import ru.shanin.appfragments.ui.fragment.result.ResultFragment;
 import ru.shanin.appfragments.R;
 
 public class ActivityResult extends AppCompatActivity {
@@ -63,7 +63,7 @@ public class ActivityResult extends AppCompatActivity {
         Fragment fragment;
 //        if(bla bla bla){}
 //        else {}
-        fragment = FragmentResult.newInstanceWithInputData(data);
+        fragment = ResultFragment.newInstanceWithInputData(data);
 //        getSupportFragmentManager()
 //                .popBackStack();
         getSupportFragmentManager()

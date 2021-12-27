@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
 import ru.shanin.appfragments.ui.noland.ActivityResult;
-import ru.shanin.appfragments.ui.fragment.FragmentResult;
+import ru.shanin.appfragments.ui.fragment.result.ResultFragment;
 import ru.shanin.appfragments.R;
-import ru.shanin.appfragments.service.TypeLightService;
+import ru.shanin.appfragments.service.SensorsService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragment;
 //        if(bla bla bla){}
 //        else {}
-        fragment = FragmentResult.newInstanceWithInputData(data);
+        fragment = ResultFragment.newInstanceWithInputData(data);
 //        getSupportFragmentManager()
 //                .popBackStack();
         getSupportFragmentManager()
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         stopService(
-                TypeLightService.onStopService(getApplicationContext()));
+                SensorsService.onStopService(getApplicationContext()));
 
     }
 }

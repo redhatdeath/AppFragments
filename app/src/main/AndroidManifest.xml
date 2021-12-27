@@ -12,7 +12,7 @@
         android:theme="@style/Theme.AppFragments">
 
         <service
-            android:name=".service.TypeLightService"
+            android:name=".service.SensorsService"
             android:enabled="true" />
 
         <activity

@@ -7,33 +7,32 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import ru.shanin.appfragments.service.TypeLightService;
+import ru.shanin.appfragments.service.SensorsService;
 
 public class AppStart extends Application {
-    public static TypeLightService mService;
+    public static SensorsService mService;
 
 
     @Override
     public void onCreate() {
         super.onCreate();
-        onStartService(this);
+        onStartAppService(this);
         initService();
     }
 
-    private void onStartService(Context context) {
-        startService(TypeLightService.onStartService(context));
+    private void onStartAppService(Context context) {
+        startService(SensorsService.onStartService(context));
     }
 
 
     private void initService() {
-
         final ServiceConnection connection = new ServiceConnection() {
             @Override
             public void onServiceConnected(
                     ComponentName className,
                     IBinder service
             ) {
-                TypeLightService.LocalBinder binder = (TypeLightService.LocalBinder) service;
+                SensorsService.LocalBinder binder = (SensorsService.LocalBinder) service;
                 mService = binder.getService();
                 mService.onStartListenLightSens();
             }
@@ -44,10 +43,8 @@ public class AppStart extends Application {
             }
         };
         // Bind to LocalService
-        Intent intent = new Intent(this, TypeLightService.class);
+        Intent intent = new Intent(this, SensorsService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
-
-
     }
 
 
