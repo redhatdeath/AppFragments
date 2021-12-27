@@ -20,6 +20,11 @@ import ru.shanin.appfragments.app.AppStart;
 import ru.shanin.appfragments.service.MySensorsService;
 
 public class SensorsFragment extends Fragment {
+
+    private static final String ARGUMENT_FROM_INPUT_INT = "input_Int";
+    private static final int ARGUMENT_FROM_INPUT_TEXT_DEFAULT = Sensor.REPORTING_MODE_CONTINUOUS;
+    private int sensorType;
+
     private static MySensorsService mService;
     private TextView tv_sensor;
 
@@ -28,6 +33,7 @@ public class SensorsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mService = AppStart.mService;
+        parseParams();
     }
 
     @Nullable
@@ -53,8 +59,20 @@ public class SensorsFragment extends Fragment {
 
     }
 
-    public static SensorsFragment newInstanceWithoutInputData() {
-        return new SensorsFragment();
+    public static SensorsFragment newInstanceWithInputData(int input) {
+        Bundle args = new Bundle();
+        args.putInt(ARGUMENT_FROM_INPUT_INT, input);
+        SensorsFragment fragment = new SensorsFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    private void parseParams() {
+        sensorType = ARGUMENT_FROM_INPUT_TEXT_DEFAULT;
+        Bundle args = requireArguments();
+        if (!args.containsKey(ARGUMENT_FROM_INPUT_INT))
+            throw new RuntimeException("Arguments are absent");
+        sensorType = args.getInt(ARGUMENT_FROM_INPUT_INT);
     }
 
 

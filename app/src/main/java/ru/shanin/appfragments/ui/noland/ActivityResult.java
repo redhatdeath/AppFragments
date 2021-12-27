@@ -2,8 +2,8 @@ package ru.shanin.appfragments.ui.noland;
 
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -14,8 +14,15 @@ import ru.shanin.appfragments.ui.fragment.sensors.SensorsFragment;
 
 public class ActivityResult extends AppCompatActivity {
 
-    private static final String ARGUMENT_FROM_INPUT_TEXT = "input_text";
-    private String input_data;
+    private static final String ARGUMENT_FROM_INPUT_TEXT = "input_Text";
+    private static final String DEFAULT_TEXT = "There is no input text";
+    private static final int DEFAULT_NUM = Sensor.REPORTING_MODE_CONTINUOUS;
+    private static final String ARGUMENT_FROM_INPUT_INT = "input_Int";
+    private static final String EXTRA_MODE = "Extra_mode";
+    private static final String EXTRA_MODE_SHOW_INPUT_DATA = "Extra_mode_input";
+    private static final String EXTRA_MODE_SHOW_SENSORS = "Extra_mode_sensors";
+    private String input_data_text;
+    private int input_data_int;
 
     /**
      * Constructor Activity
@@ -26,7 +33,15 @@ public class ActivityResult extends AppCompatActivity {
      */
     public static Intent newIntentActivityResult(Context context, String arg) {
         Intent intent = new Intent(context, ActivityResult.class);
+        intent.putExtra(EXTRA_MODE, EXTRA_MODE_SHOW_INPUT_DATA);
         intent.putExtra(ARGUMENT_FROM_INPUT_TEXT, arg);
+        return intent;
+    }
+
+    public static Intent newIntentActivityResult(Context context, int arg) {
+        Intent intent = new Intent(context, ActivityResult.class);
+        intent.putExtra(EXTRA_MODE, EXTRA_MODE_SHOW_SENSORS);
+        intent.putExtra(ARGUMENT_FROM_INPUT_INT, arg);
         return intent;
     }
 
@@ -36,21 +51,33 @@ public class ActivityResult extends AppCompatActivity {
      */
 
     private void parseIntent() {
-        if (!getIntent().hasExtra(ARGUMENT_FROM_INPUT_TEXT))
-            throw new RuntimeException("Arguments are absent");
-        input_data = getIntent().getStringExtra(ARGUMENT_FROM_INPUT_TEXT);
+        input_data_int = DEFAULT_NUM;
+        input_data_text = DEFAULT_TEXT;
+        if (!getIntent().hasExtra(EXTRA_MODE))
+            throw new RuntimeException("Extra mode is absent");
+        String mode = getIntent().getStringExtra(EXTRA_MODE);
+        if (mode.equals(EXTRA_MODE_SHOW_INPUT_DATA))
+            if (!getIntent().hasExtra(ARGUMENT_FROM_INPUT_TEXT))
+                throw new RuntimeException("Input text data is absent");
+            else input_data_text = getIntent().getStringExtra(ARGUMENT_FROM_INPUT_TEXT);
+        else if (mode.equals(EXTRA_MODE_SHOW_SENSORS))
+            if (!getIntent().hasExtra(ARGUMENT_FROM_INPUT_INT))
+                throw new RuntimeException("Input int data is absent");
+            else input_data_int = getIntent().getIntExtra(ARGUMENT_FROM_INPUT_INT, DEFAULT_NUM);
+        else throw new RuntimeException("Unknown extra mode " + mode);
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
         parseIntent();
-        Log.d("ActivityResult", "input_data = " + input_data);
-        if (savedInstanceState == null)
-            launchFragmentResult();
-
+        if (savedInstanceState == null) {
+            if (!input_data_text.equals(DEFAULT_TEXT))
+                launchFragmentResult(input_data_text);
+            if (input_data_int != DEFAULT_NUM)
+                launchFragmentSensors(input_data_int);
+        }
     }
 
     /**
@@ -72,7 +99,7 @@ public class ActivityResult extends AppCompatActivity {
 //                .addToBackStack("null")
 //                .replace(
 //                        R.id.fragmentActivityResult,
-//                        FragmentResult.newInstanceWithInputData(data)
+//                        fragment
 //                )
                 .add(
                         R.id.fragmentActivityResult,
@@ -81,11 +108,11 @@ public class ActivityResult extends AppCompatActivity {
                 .commit();
     }
 
-    private void launchFragmentResult() {
+    private void launchFragmentSensors(int data) {
         Fragment fragment;
 //        if(bla bla bla){}
 //        else {}
-        fragment = SensorsFragment.newInstanceWithoutInputData();
+        fragment = SensorsFragment.newInstanceWithInputData(data);
 //        getSupportFragmentManager()
 //                .popBackStack();
         getSupportFragmentManager()
@@ -93,7 +120,7 @@ public class ActivityResult extends AppCompatActivity {
 //                .addToBackStack("null")
 //                .replace(
 //                        R.id.fragmentActivityResult,
-//                        FragmentResult.newInstanceWithInputData(data)
+//                        fragment
 //                )
                 .add(
                         R.id.fragmentActivityResult,

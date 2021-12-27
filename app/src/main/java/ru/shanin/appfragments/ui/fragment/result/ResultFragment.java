@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,14 +15,31 @@ import ru.shanin.appfragments.R;
 public class ResultFragment extends Fragment {
 
     private static final String ARGUMENT_FROM_INPUT_TEXT = "input_text";
-    private static final String ARGUMENT_FROM_INPUT_TEXT_DEFAULT = "empty_text";
-    private String input_data;
+    private static final String ARGUMENT_FROM_INPUT_TEXT_DEFAULT = "There is no input text";
+    private String input_data_text;
+
+    public static ResultFragment newInstanceWithInputData(String input) {
+        Bundle args = new Bundle();
+        args.putString(ARGUMENT_FROM_INPUT_TEXT, input);
+        ResultFragment fragment = new ResultFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         parseParams();
     }
+
+    private void parseParams() {
+        input_data_text = ARGUMENT_FROM_INPUT_TEXT_DEFAULT;
+        Bundle args = requireArguments();
+        if (!args.containsKey(ARGUMENT_FROM_INPUT_TEXT))
+            throw new RuntimeException("Arguments are absent");
+        input_data_text = args.getString(ARGUMENT_FROM_INPUT_TEXT);
+    }
+
 
     @Nullable
     @Override
@@ -45,29 +61,9 @@ public class ResultFragment extends Fragment {
         initLayout(view);
     }
 
-    private void parseParams() {
-        Bundle args = requireArguments();
-        if (!args.containsKey(ARGUMENT_FROM_INPUT_TEXT))
-            throw new RuntimeException("Arguments are absent");
-        input_data = args.getString(ARGUMENT_FROM_INPUT_TEXT, ARGUMENT_FROM_INPUT_TEXT_DEFAULT);
-    }
-
-    public static ResultFragment newInstanceWithInputData(String input) {
-        Bundle args = new Bundle();
-        args.putString(ARGUMENT_FROM_INPUT_TEXT, input);
-        ResultFragment fragment = new ResultFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public static ResultFragment newInstanceWithoutInputData() {
-        return new ResultFragment();
-    }
-
     private void initLayout(View view) {
         TextView tv_input = view.findViewById(R.id.about_tv);
-        tv_input.setText(input_data);
-        Button bt = view.findViewById(R.id.bt);
-        bt.setOnClickListener(v -> requireActivity().onBackPressed());
+        tv_input.setText(input_data_text);
+        (view.findViewById(R.id.bt)).setOnClickListener(v -> requireActivity().onBackPressed());
     }
 }

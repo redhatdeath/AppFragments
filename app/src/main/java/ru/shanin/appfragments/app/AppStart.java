@@ -40,7 +40,7 @@ public class AppStart extends Application {
             }
         };
         // Bind to LocalService
-        Intent intent = new Intent(this, SensorsService.class);
+        Intent intent = new Intent(this, MySensorsService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
