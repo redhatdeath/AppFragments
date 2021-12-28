@@ -112,15 +112,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        if(bla bla bla){}
 //        else {}
         fragment = ResultFragment.newInstanceWithInputData(data);
-//        getSupportFragmentManager()
-//                .popBackStack();
+        getSupportFragmentManager()
+                .popBackStack();
         getSupportFragmentManager()
                 .beginTransaction()
-//                .addToBackStack("null")
-//                .replace(
-//                        R.id.fragmentActivityResult,
-//                        FragmentResult.newInstanceWithInputData(data)
-//                )
+                .addToBackStack("null")
+                .replace(
+                        R.id.fragmentActivityResult,
+                        ResultFragment.newInstanceWithInputData(data)
+                )
                 .add(
                         R.id.fragmentActivityResult,
                         fragment
@@ -133,19 +133,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        if(bla bla bla){}
 //        else {}
         fragment = SensorsFragment.newInstanceWithInputData(data);
-//        getSupportFragmentManager()
-//                .popBackStack();
+        getSupportFragmentManager()
+                .popBackStack();
         getSupportFragmentManager()
                 .beginTransaction()
-//                .addToBackStack("null")
-//                .replace(
-//                        R.id.fragmentActivityResult,
-//                        FragmentResult.newInstanceWithInputData(data)
-//                )
-                .add(
+                .addToBackStack("null")
+                .replace(
                         R.id.fragmentActivityResult,
-                        fragment
+                        SensorsFragment.newInstanceWithInputData(data)
                 )
+//                .add(
+//                        R.id.fragmentActivityResult,
+//                        fragment
+//                )
                 .commit();
     }
 

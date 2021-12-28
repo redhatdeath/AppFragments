@@ -96,11 +96,11 @@ public class ActivityResult extends AppCompatActivity {
 //                .popBackStack();
         getSupportFragmentManager()
                 .beginTransaction()
-//                .addToBackStack("null")
-//                .replace(
-//                        R.id.fragmentActivityResult,
-//                        fragment
-//                )
+                .addToBackStack("null")
+                .replace(
+                        R.id.fragmentActivityResult,
+                        fragment
+                )
                 .add(
                         R.id.fragmentActivityResult,
                         fragment
@@ -117,7 +117,7 @@ public class ActivityResult extends AppCompatActivity {
 //                .popBackStack();
         getSupportFragmentManager()
                 .beginTransaction()
-//                .addToBackStack("null")
+                .addToBackStack("null")
 //                .replace(
 //                        R.id.fragmentActivityResult,
 //                        fragment

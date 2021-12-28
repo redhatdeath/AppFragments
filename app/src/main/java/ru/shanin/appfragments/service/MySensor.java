@@ -35,7 +35,7 @@ public class MySensor {
     private void onStartListenSens() {
         MySensorsService
                 .getSensorManager()
-                .registerListener(listener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+                .registerListener(listener, sensor, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     private void onStopListenSens() {
