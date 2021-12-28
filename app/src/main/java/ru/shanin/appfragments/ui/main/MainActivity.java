@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onDestroy() {
-        stopService(MySensorsService.onStopService(getApplicationContext()));
+        stopService(MySensorsService.onMySensorsService(getApplicationContext()));
         super.onDestroy();
     }
 }

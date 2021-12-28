@@ -20,7 +20,7 @@ public class AppStart extends Application {
     }
 
     private void onStartAppService(Context context) {
-        context.startForegroundService(MySensorsService.onStartService(context));
+        context.startForegroundService(MySensorsService.onMySensorsService(context));
     }
 
     private void initService() {
@@ -32,7 +32,6 @@ public class AppStart extends Application {
             ) {
                 MySensorsService.LocalBinder binder = (MySensorsService.LocalBinder) service;
                 mService = binder.getService();
-// To All Sensors:         mService.startListeners();
             }
 
             @Override

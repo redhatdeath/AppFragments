@@ -35,17 +35,13 @@ public class MySensor {
     private void onStartListenSens() {
         MySensorsService
                 .getSensorManager()
-                .registerListener(
-                        listener, sensor, SensorManager.SENSOR_DELAY_NORMAL
-                );
+                .registerListener(listener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     private void onStopListenSens() {
         MySensorsService
                 .getSensorManager()
-                .unregisterListener(
-                        listener, sensor
-                );
+                .unregisterListener(listener, sensor);
     }
 
     public void startWork() {
