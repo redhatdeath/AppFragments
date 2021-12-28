@@ -16,22 +16,8 @@ import java.util.List;
 
 public class MySensorsService extends Service {
 
-    public static MySensor light;
-    public static MySensor accel;
-    public static MySensor gyros;
-    public static MySensor magne;
-
-    private static final int sensorTypeAccel;
-    private static final int sensorTypeGyros;
-    private static final int sensorTypeLight;
-    private static final int sensorTypeMagne;
-
-    static {
-        sensorTypeAccel = Sensor.TYPE_ACCELEROMETER;
-        sensorTypeGyros = Sensor.TYPE_GYROSCOPE;
-        sensorTypeLight = Sensor.TYPE_LIGHT;
-        sensorTypeMagne = Sensor.TYPE_MAGNETIC_FIELD;
-    }
+    public static MySensor mySensor;
+    private static SensorManager sensorManager;
 
     private final IBinder binder = new LocalBinder();
 
@@ -47,6 +33,9 @@ public class MySensorsService extends Service {
         }
     }
 
+    public static SensorManager getSensorManager() {
+        return sensorManager;
+    }
 
     @Nullable
     @Override
@@ -78,20 +67,21 @@ public class MySensorsService extends Service {
 
 
     private void initSensor() {
-        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         if (sensorManager == null)
             throw new RuntimeException("There is no sensors...");
         // get list of sensors
         List<Sensor> sensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
         listOfSensorsLiveData = new MutableLiveData<>();
         listOfSensorsLiveData.postValue(sensors);
-        accel = new MySensor(sensorManager, sensorTypeAccel);
-        gyros = new MySensor(sensorManager, sensorTypeGyros);
-        light = new MySensor(sensorManager, sensorTypeLight);
-        magne = new MySensor(sensorManager, sensorTypeMagne);
     }
 
     public MutableLiveData<List<Sensor>> getListOfSensorsLiveData() {
         return listOfSensorsLiveData;
+    }
+
+    public static void newMySensor(int sensorType) {
+        Log.d("SensorsFragment", "MySensorsService: input data = " + sensorType);
+        mySensor = new MySensor(sensorType);
     }
 }

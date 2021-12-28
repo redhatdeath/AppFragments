@@ -2,6 +2,7 @@ package ru.shanin.appfragments.ui.fragment.sensors;
 
 import android.hardware.Sensor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.List;
 
 import ru.shanin.appfragments.R;
-import ru.shanin.appfragments.app.AppStart;
 import ru.shanin.appfragments.service.MySensorsService;
 
 public class SensorsFragment extends Fragment {
@@ -24,16 +24,22 @@ public class SensorsFragment extends Fragment {
     private static final String ARGUMENT_FROM_INPUT_INT = "input_Int";
     private static final int ARGUMENT_FROM_INPUT_TEXT_DEFAULT = Sensor.REPORTING_MODE_CONTINUOUS;
     private int sensorType;
-
-    private static MySensorsService mService;
     private TextView tv_sensor;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mService = AppStart.mService;
         parseParams();
+        Log.d("SensorsFragment", "input data = " + sensorType);
+        MySensorsService.newMySensor(sensorType);
+        MySensorsService.mySensor.startWork();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        MySensorsService.mySensor.stopWork();
     }
 
     @Nullable
@@ -55,7 +61,8 @@ public class SensorsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initLayout(view);
         SensorsViewModel viewModel = new ViewModelProvider(this).get(SensorsViewModel.class);
-        viewModel.sensorsData.observe(getViewLifecycleOwner(), new MyObserver());
+        viewModel.sensorsData.observe(getViewLifecycleOwner(), new MyObserverListData());
+        viewModel.sensorData.observe(getViewLifecycleOwner(), new MyObserverStringData());
 
     }
 
@@ -77,12 +84,12 @@ public class SensorsFragment extends Fragment {
 
 
     private void initLayout(View view) {
-        tv_sensor = view.findViewById(R.id.about_tv);
+        tv_sensor = view.findViewById(R.id.tv_sensors);
         (view.findViewById(R.id.bt)).setOnClickListener(v -> requireActivity().onBackPressed());
     }
 
 
-    private class MyObserver implements Observer<List<Sensor>> {
+    private class MyObserverListData implements Observer<List<Sensor>> {
         @Override
         public void onChanged(List<Sensor> sensorsList) {
             StringBuilder result = new StringBuilder("Sensors:\n");
@@ -96,9 +103,11 @@ public class SensorsFragment extends Fragment {
         }
     }
 
-    private void initServiceConnect() {
-
+    private class MyObserverStringData implements Observer<String> {
+        @Override
+        public void onChanged(String sensorData) {
+            StringBuilder result = new StringBuilder("Sensor data:\n");
+            tv_sensor.setText(result.append(sensorData));
+        }
     }
-
-
 }

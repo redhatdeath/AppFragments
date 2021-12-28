@@ -15,9 +15,11 @@ public class MySensor {
     private SensorEventListener listener;
     private final MutableLiveData<String> sensorLiveData;
 
-    public MySensor(SensorManager sensorManager, int sensorType) {
+    public MySensor(int sensorType) {
+        Log.d("SensorsFragment", "MySensorsService: MySensor: input data = " + sensorType);
         this.sensorType = sensorType;
-        sensor = sensorManager.getDefaultSensor(this.sensorType);
+        sensor = MySensorsService.getSensorManager().getDefaultSensor(this.sensorType);
+        Log.d("SensorsFragment", "MySensorsService: MySensor: sensor = " + sensor.getName());
         sensorLiveData = new MutableLiveData<>();
         if (sensor == null)
             sensorLiveData.postValue("There is no Sensor with Type = " + this.sensorType);
@@ -26,6 +28,8 @@ public class MySensor {
     }
 
     private SensorEventListener SettingListener(MutableLiveData<String> liveData) {
+        Log.d("SensorsFragment", "MySensorsService: MySensor: sensor = " + sensor.getName()
+        +" listener = new create");
         return new SensorEventListener() {
             @Override
             public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -33,13 +37,14 @@ public class MySensor {
 
             @Override
             public void onSensorChanged(SensorEvent event) {
+                Log.d("SensorsFragment", "onSensorChanged: " + event.values[0]);
                 liveData.postValue(String.valueOf(event.values[0]));
             }
         };
     }
 
-    private void onStartListenSens(SensorManager sensorManager) {
-        sensorManager
+    private void onStartListenSens() {
+        MySensorsService.getSensorManager()
                 .registerListener(
                         listener,
                         sensor,
@@ -47,8 +52,8 @@ public class MySensor {
                 );
     }
 
-    private void onStopListenSens(SensorManager sensorManager) {
-        sensorManager
+    private void onStopListenSens() {
+        MySensorsService.getSensorManager()
                 .unregisterListener(
                         listener,
                         sensor
@@ -59,9 +64,11 @@ public class MySensor {
         return sensorLiveData;
     }
 
-    public void startWork(SensorManager sensorManager) {
+    public void startWork() {
+        Log.d("SensorsFragment", "MySensorsService: MySensor: sensor = " + sensor.getName()
+        +"startWork");
         if (sensor != null)
-            onStartListenSens(sensorManager);
+            onStartListenSens();
         else
             Log.d(
                     MySensor.class.getSimpleName(),
@@ -70,9 +77,9 @@ public class MySensor {
             );
     }
 
-    public void stopWork(SensorManager sensorManager) {
+    public void stopWork() {
         if (sensor != null)
-            onStopListenSens(sensorManager);
+            onStopListenSens();
         else
             Log.d(
                     MySensor.class.getSimpleName(),
