@@ -2,7 +2,6 @@ package ru.shanin.appfragments.ui.fragment.sensors;
 
 import android.hardware.Sensor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,15 +32,13 @@ public class SensorsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mService = AppStart.mService;
-        Log.d("SensorsFragment", "mService==null? ->  " + (mService == null));
         parseParams();
-        Log.d("SensorsFragment", "input data = " + sensorType);
     }
 
     @Override
     public void onDestroyView() {
         if (sensorType != Sensor.TYPE_ALL)
-            mService.stopListeners();
+            mService.stopMySensorListener();
         super.onDestroyView();
     }
 
@@ -75,23 +72,11 @@ public class SensorsFragment extends Fragment {
                         .observe(getViewLifecycleOwner(), new MyObserverListData());
                 break;
             case Sensor.TYPE_ACCELEROMETER:
-                viewModel
-                        .sensorAccelData
-                        .observe(getViewLifecycleOwner(), new MyObserverStringData());
-                break;
             case Sensor.TYPE_GYROSCOPE:
-                viewModel
-                        .sensorGyrosData
-                        .observe(getViewLifecycleOwner(), new MyObserverStringData());
-                break;
             case Sensor.TYPE_LIGHT:
-                viewModel
-                        .sensorLightData
-                        .observe(getViewLifecycleOwner(), new MyObserverStringData());
-                break;
             case Sensor.TYPE_MAGNETIC_FIELD:
                 viewModel
-                        .sensorMagneData
+                        .mySensorData
                         .observe(getViewLifecycleOwner(), new MyObserverStringData());
                 break;
         }
@@ -111,10 +96,11 @@ public class SensorsFragment extends Fragment {
         if (!args.containsKey(ARGUMENT_FROM_INPUT_INT))
             throw new RuntimeException("Arguments are absent");
         sensorType = args.getInt(ARGUMENT_FROM_INPUT_INT);
-        if (sensorType != Sensor.TYPE_ALL)
-            mService.startListener(sensorType);
+        if (sensorType != Sensor.TYPE_ALL) {
+            if (mService.newMySensor(sensorType))
+                mService.startMySensorListener();
+        }
     }
-
 
     private void initLayout(View view) {
         tv_sensor = view.findViewById(R.id.tv_sensors);
@@ -127,12 +113,10 @@ public class SensorsFragment extends Fragment {
         public void onChanged(List<Sensor> sensorsList) {
             StringBuilder result = new StringBuilder("Sensors:\n");
             if (!sensorsList.isEmpty()) {
-                for (Sensor s : sensorsList)
-                    result = result.append(s.getName()).append("\n");
+                for (Sensor s : sensorsList) result = result.append(s.getName()).append("\n");
             } else {
                 result = result.append("null\n");
             }
-            Log.d("SensorsFragment", "List sensors onChanged: result = " + result);
             tv_sensor.setText(result.toString());
         }
     }
@@ -141,7 +125,6 @@ public class SensorsFragment extends Fragment {
         @Override
         public void onChanged(String sensorData) {
             String result = "Sensor data:\n" + sensorData;
-            Log.d("SensorsFragment", "Sensor Data onChanged: result = " + result);
             tv_sensor.setText(result);
         }
     }

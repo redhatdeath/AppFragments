@@ -37,7 +37,7 @@ public class AppStart extends Application {
 
             @Override
             public void onServiceDisconnected(ComponentName arg0) {
-                mService.stopListeners();
+                mService.stopMySensorListener();
             }
         };
         // Bind to LocalService
